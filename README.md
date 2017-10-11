@@ -7,7 +7,7 @@
     ```python
     >>> from network import WLAN
     >>> STA = WLAN(0); STA.active(1)
-    >>> STA.connect('__SSID__', '__PASWORD__')
+    >>> STA.connect('__SSID__', '__PASSWORD__')
     >>> STA.ifconfig()  # Outputs the network configuration. If it isn't valid, wait and re-execute
     ```
 
