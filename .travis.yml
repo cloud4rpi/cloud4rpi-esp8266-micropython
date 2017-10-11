@@ -1,9 +1,16 @@
 language: python
 
 python:
-  - "3.3"
-  - "3.4"make
-  - "3.5"
-  - "3.6"
-  
+- '3.3'
+- '3.4'
+- '3.5'
+- '3.6'
+
 script: make ci
+
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    rooms:
+      secure: OXtbdPMKM3f98IXK1zqqe1Fn2TpeElcC84p2na9Rh5xynMPhJdgrFze6uR/6TTnQfndSykcPBU35TJ64pU90k4AK6i6gYYQFCpWJRj4gmmF1HIXuhRiAucKtXeUjsBN1lDYYnrvZy/g6P9P/pZR6p1xegIwTcuK5Bj38FhVjdKjwsjqiKnxPAumjcSPDiPvsbkVshLZbs71cV79rWqoStVzbrf07dkCHD2zV+4O0BO+Avgtb3K+kEnxc+BpK6rW3YM+2TGaISpwaYLpsOqIPclP709jhSepndqvCKFIoo5J2I3M6xgZN4x5Aq/IkiAQAaMBD4sOJseohmdJoTeevIgaO3DAyWC4vJirnnahuCtiS8EzpTFkj/JL9l3Mr1DvStUrnW4EPiOBmT11LxbQhTsDn7lmIs4l/COx+Qp4DnmG56yrxKwlGkJOlNqPc4QVgougKxWzGuKOMJpMXrSNuHkl78b2LX4+RCMU1YdHiqlKqDIEno74JKBd8lqRFePxPeBRM78Elf4bcmdog4vqXt6uUfaYlROpJ56tvPO/DFCcqquCHcuBNY2wquls3qHyS/UVcyIdZJhFTeD7TcsNlSicmtBmNDfgLKxthqAzbkYuPMoni+PiIkIQESjjPx89a+SUouVdTmGRl3jEwo3UFLLi3k0tai+kCBjACTVP4pTU=
