@@ -49,7 +49,7 @@ class Device(object):
             self.__mqtt.subscribe(C4R_TOPIC_FORMAT %
                                   (self.__device_token, 'commands'), qos=1)
         except Exception as e:
-            print(e)
+            print("[Exception] %s: %s" % (type(e).__name__, e))
             return False
         return True
 
