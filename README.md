@@ -41,5 +41,4 @@ You can use this control panel to see when the button was pressed and control th
 * [Examples for Raspberry Pi](https://github.com/cloud4rpi/cloud4rpi-raspberrypi-python)
 * [Examples for Next Thing Co. C.H.I.P.](https://github.com/cloud4rpi/cloud4rpi-chip-python)
 * [Examples for Onion Omega2](https://github.com/cloud4rpi/cloud4rpi-omega2-python)
-* [Client Library](https://github.com/cloud4rpi/cloud4rpi)
 * [Documentation Repository](https://github.com/cloud4rpi/docs)
