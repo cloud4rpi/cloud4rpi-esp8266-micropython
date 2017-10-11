@@ -5,7 +5,7 @@ import cloud4rpi
 
 # Put the name of your Wi-Fi and its password here.
 # If you have an open Wi-Fi, simply remove the second item.
-WIFI_SSID_PASSWORD = '__SSID__', '__PSW__'
+WIFI_SSID_PASSWORD = '__SSID__', '__PWD__'
 
 # Put your device token here. To get the token,
 # sign up at https://cloud4rpi.io and create a device.
