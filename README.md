@@ -30,7 +30,8 @@
 
 8. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
 9. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
-10. Add two **Switch** widgets and bind them to the `LED` and `Button` variables.
+10. Add two **Switch** widgets and bind them to the `LED` variable.
+11. Add a new **Text** widget and bind it to the `Button` variable. Configure different colors for "true" and "false" strings.
 
 You can use this control panel to see when the button was pressed and control the LED.
 
