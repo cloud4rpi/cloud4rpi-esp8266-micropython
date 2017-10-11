@@ -77,6 +77,8 @@ else:
 
         button_state_prev = button_state_now
         button_state_now = button.value()
+
+        # Falling edge detection
         if button_state_prev == 1 and button_state_now == 0:
             btn_value = not btn_value
             device.publish_data()
