@@ -14,6 +14,8 @@ DEVICE_TOKEN = '__YOUR_DEVICE_TOKEN__'
 LED_PIN = 12
 BUTTON_PIN = 16
 
+# --------------------------------------------------------------------------- #
+
 STA = WLAN(STA_IF)
 STA.active(True)
 STA.connect(*WIFI_SSID_PASSWORD)
@@ -26,9 +28,6 @@ led = Pin(LED_PIN, Pin.OUT)
 button = Pin(BUTTON_PIN, Pin.IN)
 button_state_prev = button.value()
 button_state_now = button_state_prev
-
-# --------------------------------------------------------------------------- #
-
 btn_value = False
 
 def on_led(value):
