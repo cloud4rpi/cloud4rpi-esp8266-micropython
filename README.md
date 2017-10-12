@@ -17,12 +17,12 @@
 3. Clone this repository or download [cloud4rpi.py](cloud4rpi.py) and the [main.py](main.py) files.
 4. [Log into your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
 5. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**.
-4. Edit the [main.py](main.py) file. Enter your Wi-Fi network data and the **Device Token** information into the required variables.
-11. Connect the LED to GPIO12 and a button to GPIO16. If you need to use another pin, change the corresponding variables in [main.py](main.py).
+4. Edit the [main.py](main.py) file. Enter your Wi-Fi network data and paste the **Device Token** into the required variables.
+11. Connect the LED to GPIO12 and a button to GPIO16. If you need to use other pins, change the corresponding variables in [main.py](main.py).
 
     ![](hardware.png)
 
-5. Transfer the [cloud4rpi.py](cloud4rpi.py) and edited [main.py](main.py) file to your ESP8266.
+5. Transfer the [cloud4rpi.py](cloud4rpi.py) and edited [main.py](main.py) files to your ESP8266.
 6. Reset the ESP8266. You can use the console for this:
 
     ```python
