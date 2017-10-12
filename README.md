@@ -1,5 +1,7 @@
 # Cloud4RPi Library and Examples for [ESP8266](https://en.wikipedia.org/wiki/ESP8266) with [MicroPython](https://micropython.org/)
 
+[![Build Status](https://travis-ci.org/cloud4rpi/cloud4rpi-esp8266-micropython.svg?branch=master)](https://travis-ci.org/cloud4rpi/cloud4rpi-esp8266-micropython)
+
 ## Running the Sample Code
 
 1. Connect your MicroPython-enabled ESP8266 to a Wi-Fi network and configure it for the [WebREPL](https://github.com/micropython/webrepl). You can do it by accesing the console via the serial port and executing the following commands:

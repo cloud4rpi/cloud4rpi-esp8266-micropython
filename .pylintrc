@@ -1,0 +1,12 @@
+[MESSAGES CONTROL]
+# Show all warnings
+confidence=
+
+disable=C0111,C0103,F0401,W0611,W0613,W0703,W0603
+
+[BASIC]
+const-name-hint=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+
+[FORMAT]
+max-line-length=80
+expected-line-ending-format=LF

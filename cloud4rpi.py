@@ -86,5 +86,3 @@ def connect(device_token):
     device = Device(device_token)
     if device.connect():
         return device
-    else:
-        return
