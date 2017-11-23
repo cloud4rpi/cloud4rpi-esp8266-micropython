@@ -26,9 +26,11 @@ button_state_prev = button.value()
 button_state_now = button_state_prev
 btn_value = False
 
+
 def on_led(value):
     led.value(not value)
     return not led.value()
+
 
 def get_btn(value):
     global btn_value
