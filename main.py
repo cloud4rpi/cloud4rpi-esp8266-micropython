@@ -1,5 +1,6 @@
 from machine import Pin, idle, reset
 from network import WLAN, STA_IF
+from time import time, sleep_ms
 
 import cloud4rpi
 
@@ -14,15 +15,10 @@ DEVICE_TOKEN = '__YOUR_DEVICE_TOKEN__'
 LED_PIN = 12
 BUTTON_PIN = 16
 
+WIFI_CONNECTION_TIMEOUT = 10  # seconds
+PUBLISH_INTERVAL = 60  # seconds
+
 # --------------------------------------------------------------------------- #
-
-STA = WLAN(STA_IF)
-STA.active(True)
-STA.connect(*WIFI_SSID_PASSWORD)
-
-while not STA.isconnected():
-    idle()
-print("Connected to Wi-Fi")
 
 led = Pin(LED_PIN, Pin.OUT)
 button = Pin(BUTTON_PIN, Pin.IN)
@@ -30,57 +26,82 @@ button_state_prev = button.value()
 button_state_now = button_state_prev
 btn_value = False
 
-
 def on_led(value):
     led.value(not value)
     return not led.value()
-
 
 def get_btn(value):
     global btn_value
     return btn_value
 
-device = cloud4rpi.connect(DEVICE_TOKEN)
+STA = WLAN(STA_IF)
+STA.active(True)
 
-if not device:
-    print("Failed to connect to Cloud4RPi")
-else:
-    print("Connected to Cloud4RPi")
-    device.declare({
-        'LED': {
-            'type': 'bool',
-            'value': False,
-            'bind': on_led
-        },
-        'Button': {
-            'type': 'bool',
-            'value': False,
-            'bind': get_btn
-        }
-    })
-    device.declare_diag({
-        'IP Address': STA.ifconfig()[0]
-    })
+while not STA.isconnected():
+    print("Connecting to Wi-Fi...")
+    wifi_reconnect_time = time() + WIFI_CONNECTION_TIMEOUT
+    STA.connect(*WIFI_SSID_PASSWORD)
+    while not STA.isconnected() and time() < wifi_reconnect_time:
+        sleep_ms(500)
+    if not STA.isconnected():
+        print("Connection FAILED!")
+        continue
 
-    device.publish_diag()
-    device.publish_config()
-    device.publish_data()
+    print("Connected!")
 
-    print("Waiting for messages...")
-    while True:
-        try:
-            device.check_commands()
-        except Exception as e:
-            print("%s: %s; Reconnecting..." % (type(e).__name__, e))
-            if device.connect():
-                print("Success!")
-            else:
-                print("Failed to reconnect")
+    device = None
+    while not device:
+        if not STA.isconnected():
+            print("Wi-Fi Connection failed!")
+            break
+        print("Connecting to Cloud4RPi...")
+        device = cloud4rpi.connect(DEVICE_TOKEN)
+        if not device:
+            continue
+        print("Connected!")
 
-        button_state_prev = button_state_now
-        button_state_now = button.value()
+        device.declare({
+            'LED': {
+                'type': 'bool',
+                'value': False,
+                'bind': on_led
+            },
+            'Button': {
+                'type': 'bool',
+                'value': False,
+                'bind': get_btn
+            }
+        })
+        device.declare_diag({
+            'IP Address': STA.ifconfig()[0]
+        })
 
-        # Falling edge detection
-        if button_state_prev == 1 and button_state_now == 0:
-            btn_value = not btn_value
-            device.publish_data()
+        device.publish_diag()
+        device.publish_config()
+        device.publish_data()
+
+        print("Waiting for messages...")
+
+        next_publish = time() + PUBLISH_INTERVAL
+
+        while True:
+            try:
+                device.check_commands()
+                button_state_prev = button_state_now
+                button_state_now = button.value()
+
+                # Falling edge detection
+                if button_state_prev == 1 and button_state_now == 0:
+                    btn_value = not btn_value
+                    device.publish_data()
+
+                if time() >= next_publish:
+                    print("Scheduled publishing...")
+                    device.publish_data()
+                    next_publish = time() + PUBLISH_INTERVAL
+                sleep_ms(100)
+
+            except Exception as e:
+                print("%s: %s" % (type(e).__name__, e))
+                device = None
+                break
