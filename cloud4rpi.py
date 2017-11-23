@@ -3,10 +3,12 @@
 # --------------------------------------------------------------------------- #
 
 import json
+from time import time
 
 # https://raw.githubusercontent.com/micropython/micropython-lib/mqtt/umqtt.simple/umqtt/simple.py
 from mqtt import MQTTClient
 
+PING_INTERVAL = 40  # seconds. Should be less then 55
 
 C4R_BROKER_HOST = 'mq.cloud4rpi.io'
 C4R_BROKER_PORT = 1883
@@ -21,6 +23,7 @@ class Device(object):
         self.__diag_variables = None
         self.__mqtt = None
         self.__bindings = dict()
+        self.next_ping_time = time()
 
     def __publish(self, topic, payload=None):
         if payload is None:
@@ -29,6 +32,7 @@ class Device(object):
         self.__mqtt.publish(C4R_TOPIC_FORMAT %
                             (self.__device_token, topic), msg, qos=1)
         print(topic, "<--", msg)
+        self.mqtt_ping_reset()
 
     def __on_message(self, topic, msg):
         print(topic.decode().rsplit('/')[-1], "-->", msg.decode())
@@ -51,7 +55,16 @@ class Device(object):
         except Exception as e:
             print("[Exception] %s: %s" % (type(e).__name__, e))
             return False
+        self.mqtt_ping_reset()
         return True
+
+    def ping(self):
+        self.__mqtt.ping()
+        self.mqtt_ping_reset()
+
+    def mqtt_ping_reset(self):
+        self.next_ping_time = time() + PING_INTERVAL
+        print("Next MQTT ping at", self.next_ping_time)
 
     def declare(self, variables):
         self.__variables = variables
@@ -79,8 +92,11 @@ class Device(object):
         self.__publish('data', cfg)
 
     def check_commands(self):
+        """Call me at least once per 55s"""
         self.__mqtt.check_msg()
-
+        if time() >= self.next_ping_time:
+            print("MQTT ping at", time())
+            self.ping()
 
 def connect(device_token):
     device = Device(device_token)
