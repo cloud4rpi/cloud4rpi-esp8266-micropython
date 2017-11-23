@@ -98,6 +98,7 @@ class Device(object):
             print("MQTT ping at", time())
             self.ping()
 
+
 def connect(device_token):
     device = Device(device_token)
     if device.connect():
