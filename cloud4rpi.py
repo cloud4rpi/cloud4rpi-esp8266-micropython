@@ -40,6 +40,7 @@ class Device(object):
         for var_name, callback in self.__bindings.items():
             if var_name in data.keys():
                 ret = callback(data[var_name])
+                self.__variables[var_name]['value'] = ret
                 self.__publish('data', {var_name: ret})
 
     def connect(self):
