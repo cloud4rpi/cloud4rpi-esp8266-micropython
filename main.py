@@ -1,6 +1,6 @@
+from time import time, sleep
 from machine import Pin, idle, reset
 from network import WLAN, STA_IF
-from time import time, sleep_ms
 
 import cloud4rpi
 
@@ -36,6 +36,7 @@ def get_btn(value):
     global btn_value
     return btn_value
 
+
 STA = WLAN(STA_IF)
 STA.active(True)
 
@@ -44,7 +45,7 @@ while not STA.isconnected():
     wifi_reconnect_time = time() + WIFI_CONNECTION_TIMEOUT
     STA.connect(*WIFI_SSID_PASSWORD)
     while not STA.isconnected() and time() < wifi_reconnect_time:
-        sleep_ms(500)
+        sleep(0.5)
     if not STA.isconnected():
         print("Connection FAILED!")
         continue
@@ -101,7 +102,7 @@ while not STA.isconnected():
                     print("Scheduled publishing...")
                     device.publish_data()
                     next_publish = time() + PUBLISH_INTERVAL
-                sleep_ms(100)
+                sleep(0.1)
 
             except Exception as e:
                 print("%s: %s" % (type(e).__name__, e))
