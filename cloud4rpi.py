@@ -27,7 +27,7 @@ class Device(object):
 
     def __publish(self, topic, payload=None):
         if payload is None:
-            return False
+            return
         msg = json.dumps({'payload': payload})
         self.__mqtt.publish(C4R_TOPIC_FORMAT %
                             (self.__device_token, topic), msg, qos=1)
@@ -104,3 +104,4 @@ def connect(device_token):
     device = Device(device_token)
     if device.connect():
         return device
+    return None
