@@ -63,6 +63,7 @@ while not STA.isconnected():
             continue
         print("Connected!")
 
+        # Available types: 'bool', 'numeric', 'string'
         device.declare({
             'LED': {
                 'type': 'bool',
