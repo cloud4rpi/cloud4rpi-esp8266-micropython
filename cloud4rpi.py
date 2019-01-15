@@ -16,7 +16,7 @@ C4R_BROKER_PORT = 1883
 C4R_TOPIC_FORMAT = b'devices/%s/%s'
 
 
-class Device(object):
+class Device:
     def __init__(self, device_token):
         self.__device_token = bytes(device_token, 'utf-8')
         self.__variables = None
