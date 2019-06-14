@@ -1,12 +1,9 @@
-.PHONY: init style lint lint3
+.PHONY: init style lint
 
 init:
 	pip install pycodestyle pylint
 
 lint:
-	pylint --rcfile=.pylintrc --reports=n *.py
-
-lint3:
 	python3 -m pylint --rcfile=.pylintrc --reports=n *.py
 
 style:

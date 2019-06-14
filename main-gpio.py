@@ -1,6 +1,8 @@
 from time import time, sleep
-from machine import Pin, idle, reset
+from machine import Pin, reset
 from network import WLAN, STA_IF
+from onewire import OneWire
+from ds18x20 import DS18X20
 
 import cloud4rpi
 
@@ -14,6 +16,7 @@ DEVICE_TOKEN = '__YOUR_DEVICE_TOKEN__'
 
 LED_PIN = 12
 BUTTON_PIN = 16
+ONEWIRE_PIN = 14
 
 WIFI_CONNECTION_TIMEOUT = 10  # seconds
 PUBLISH_INTERVAL = 60  # seconds
@@ -26,6 +29,10 @@ button_state_prev = button.value()
 button_state_now = button_state_prev
 btn_value = False
 
+ds18 = DS18X20(OneWire(Pin(ONEWIRE_PIN)))
+thermometers = ds18.scan()
+print("Found", len(thermometers), "thermometers:", thermometers)
+
 
 def on_led(value):
     led.value(not value)
@@ -36,6 +43,21 @@ def get_btn(value):
     global btn_value
     return btn_value
 
+
+def read_thermometers():
+    global ds18
+    if thermometers:
+        print("Getting temperatures from DS18B20 sensors...")
+        ds18.convert_temp()
+        sleep(0.75)
+
+
+def get_temperature(value):
+    global thermometers
+    return ds18.read_temp(thermometers[0]) if thermometers else None
+
+
+read_thermometers()
 
 STA = WLAN(STA_IF)
 STA.active(True)
@@ -74,6 +96,11 @@ while not STA.isconnected():
                 'type': 'bool',
                 'value': False,
                 'bind': get_btn
+            },
+            'Temperature': {
+                'type': 'numeric',
+                'value': None,
+                'bind': get_temperature
             }
         })
         device.declare_diag({
@@ -101,6 +128,7 @@ while not STA.isconnected():
 
                 if time() >= next_publish:
                     print("Scheduled publishing...")
+                    read_thermometers()
                     device.publish_data()
                     next_publish = time() + PUBLISH_INTERVAL
                 sleep(0.1)
