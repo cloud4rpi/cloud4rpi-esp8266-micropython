@@ -19,7 +19,9 @@ BUTTON_PIN = 16
 ONEWIRE_PIN = 14
 
 WIFI_CONNECTION_TIMEOUT = 10  # seconds
-PUBLISH_INTERVAL = 60  # seconds
+
+# Decrease this value for testing purposes.
+PUBLISH_INTERVAL = 300  # seconds
 
 # --------------------------------------------------------------------------- #
 
