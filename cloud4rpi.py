@@ -41,7 +41,7 @@ class Device:
             if var_name in data.keys():
                 ret = callback(data[var_name])
                 self.__variables[var_name]['value'] = ret
-                self.__publish('data', {var_name: ret})
+                self.__publish('data/cr', {var_name: ret})
 
     def connect(self):
         self.__mqtt = MQTTClient(client_id=self.__device_token,
